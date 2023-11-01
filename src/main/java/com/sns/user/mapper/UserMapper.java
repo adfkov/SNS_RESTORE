@@ -11,6 +11,8 @@ import com.sns.user.Entity.UserEntity;
 @Repository
 public interface UserMapper extends JpaRepository<UserEntity, Integer>{
 //	public List<Map<String, Object>> selectUser();
+	public UserEntity findByLoginId(String loginId);
+	
 	public UserEntity findByLoginIdAndPassword(String loginId, String password);
 	
 }

@@ -3,7 +3,7 @@
 <div class="d-flex justify-content-center">
 	<div class="sign-up-box">
 		<h1 class="m-4 font-weight-bold">회원가입</h1>
-		<form id="signUpForm" method="post" action="/user/sign_up">
+		<form id="signUpForm" method="post" action="/user/sign-up">
 			<span class="sign-up-subject">ID</span>
 			<%-- 인풋 옆에 중복확인 버튼을 옆에 붙이기 위해 div 만들고 d-flex --%>
 			<div class="d-flex ml-3 mt-3">
@@ -62,7 +62,7 @@
 
 						} else {
 							$('#idCheckOk').removeClass('d-none');
-						}
+							}
 					}
 					, error: function(request, status, error) {
 						alert("중복확인에 실패했습니다.");
@@ -106,8 +106,30 @@
 					return;
 				}
 			
-			
-				})
+				if($('#idCheckOk').hasClass('d-none')) {
+					alert("아이디 중복확인을 다시 해주세요.");
+					return false;
+				}
+				
+				let url = $(this).attr('action');
+				alert(url);
+				
+				let params = $(this).serialize(); // 폼 태그에 있는 name 속성- 값으로 파라미터 구성 
+				console.log(params);
+				// 
+				$.post(url, params) // request 정보 , request body , 요청 후 응답까지 받아온다.
+				.done(function(data) { // response
+					// code: 200, result: 성공
+					if(data.code == 200) { // 성공
+						alert("가입을 환영합니다. 로그인을 해주세요.");
+						location.href = "/user/sign-in-view"; // 화면 넘기기
+					} else {
+						// 로직 실패
+						alert(data.errorMessage);
+						}
+					});
+				
+				});
 			});
 		</script>
 	</div>

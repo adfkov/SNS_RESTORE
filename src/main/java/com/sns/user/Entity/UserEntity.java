@@ -13,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -24,6 +25,7 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table(name="sns_230619_user")
+//@Data
 public class UserEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
