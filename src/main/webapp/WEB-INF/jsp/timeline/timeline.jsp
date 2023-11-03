@@ -31,7 +31,8 @@
 			<div class="card border rounded mt-3">
 				<%-- 글쓴이, 더보기(삭제) --%>
 				<div class="p-2 d-flex justify-content-between">
-					<span class="font-weight-bold">${post.userId}</span>
+					<span class="font-weight-bold" id="userIdSpan">${post.userId}</span>
+					<span class="postId d-none">${post.id}</span>
 					
 					<a href="#" class="more-btn">
 						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
@@ -40,7 +41,7 @@
 				
 				<%-- 카드 이미지 --%>
 				<div class="card-img">
-					<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
+					<img src="${post.imagePath}" class="" alt="본문 이미지" width="100" height="100">
 				</div>
 				
 				<%-- 좋아요 --%>
@@ -54,7 +55,7 @@
 				<%-- 글 --%>
 				<div class="card-post m-3">
 					<span class="font-weight-bold">${post.userId}</span>
-					<span>${post.content}</span>
+					<span class="postContent">${post.content}</span>
 				</div>
 				
 				<%-- 댓글 제목 --%>
@@ -77,7 +78,7 @@
 					
 					<%-- 댓글 쓰기 --%>
 					<div class="comment-write d-flex border-top mt-2">
-						<input type="text" class="form-control border-0 mr-2 comment-input" placeholder="댓글 달기"/> 
+						<input type="text" class="form-control border-0 mr-1 comment-input" placeholder="댓글 달기"/> 
 						<button type="button" class="comment-btn btn btn-light" data-post-id="${card.post.id}">게시</button>
 					</div>
 				</div> <%--// 댓글 목록 끝 --%>
@@ -116,6 +117,48 @@
 			// 유효성 통과한 이미지는 업로드 된 파일명 노출
 			$('#fileName').text(fileName);
 		
+		});
+		
+		// 내용 입력 후 글쓰기 버튼 눌렀을 때
+		$("#writeBtn").on('click', function() {
+			let content = $('#writeTextArea').val().trim();
+			if(content == "") {
+				alert("내용을 입력하세요.");
+			}
+			let fileName = $('#file').val();
+			//alert(fileName); // C:\fakepath\스크린샷(1).png
+			let formData = new FormData();
+			formData.append("content", content);
+			formData.append("file",$('#file')[0].files[0]);
+			
+			$.ajax({
+				type:"POST"
+				, url:"/"
+			})
 		})
-	})
+		
+		
+		// 댓글 게시 버튼 눌렀을 때 
+		$(".comment-btn").on('click', function() {
+			let userId = $('#userIdSpan').text();
+			let postId  = $('.postId').text();
+			let commentContent = $('.comment-input').val();
+			
+			$.ajax({
+				// request
+				type:"POST"
+				,url:"/comment/add-comment"
+				,data:{"userId":userId, "postId":postId, "commentContent":commentContent}
+				,success: function(data) {
+					if(data.code == 200) {
+						alert("댓글이 달렸습니다.");
+						location.href="/timeline/timeline-view";
+					} else {
+						alert(data.errorMessage);
+					}
+				}	
+			//
+			})
+		})
+	});
 </script>
