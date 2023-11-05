@@ -22,15 +22,20 @@ public class PostRestController {
 	
 	@PostMapping("/create-post")
 	public Map<String, Object> createPost(
-			@RequestParam("content") String content
+			@RequestParam("subject") String subject
+			,@RequestParam("content") String content
 			,@RequestParam(value="file", required = false) MultipartFile file
 			,HttpSession session) {
 		Integer userId = (Integer)session.getAttribute("userId");
+		String userLoginId = (String) session.getAttribute("userLoginId");
+
 		//String content, MultipartFile file
 		// DB insert
-		postBO.addPost(userId, content, file);
+		postBO.addPost(userId, userLoginId, subject ,content, file);
 		
 		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "success");
 		return result;
 	}
 	

@@ -6,7 +6,10 @@
 
 		<%-- 글쓰기 영역(로그인 된 사람만 보이게) --%>
 		<c:if test="${not empty userId}">
+		
 		<div class="write-box border rounded m-3">
+				<input type="text" class="form-control" id="subject" value="" placeholder="제목을 입력하세요">
+		
 			<textarea id="writeTextArea" placeholder="내용을 입력해주세요" class="w-100 border-0"></textarea>
 			
 			<%-- 이미지 업로드를 위한 아이콘과 업로드 버튼을 한 행에 멀리 떨어뜨리기 위한 div --%>
@@ -40,9 +43,11 @@
 				</div>	
 				
 				<%-- 카드 이미지 --%>
+				<c:if test="${not empty post.imagePath}">
 				<div class="card-img">
-					<img src="${post.imagePath}" class="" alt="본문 이미지" width="100" height="100">
+					<img src="${post.imagePath}" class="img" alt="본문 이미지" width="100" height="100">
 				</div>
+				</c:if>
 				
 				<%-- 좋아요 --%>
 				<div class="card-like m-3">
@@ -121,19 +126,45 @@
 		
 		// 내용 입력 후 글쓰기 버튼 눌렀을 때
 		$("#writeBtn").on('click', function() {
+			let subject = $('#subject').val().trim();
 			let content = $('#writeTextArea').val().trim();
+			if(subject == "") {
+				alert("제목을 입력하세요.");
+				return;
+			}
 			if(content == "") {
 				alert("내용을 입력하세요.");
+				return;
 			}
 			let fileName = $('#file').val();
 			//alert(fileName); // C:\fakepath\스크린샷(1).png
 			let formData = new FormData();
+			formData.append("subject", subject);
 			formData.append("content", content);
 			formData.append("file",$('#file')[0].files[0]);
 			
 			$.ajax({
 				type:"POST"
-				, url:"/"
+				, url:"/post/create-post"
+				, data: formData
+				, enctype : "multipart/form-data" // 파일 업로드를 위한 필수 설정
+				, processData:false  // 파일 업로드를 위한 필수 설정
+				, contentType: false  // 파일 업로드를 위한 필수 설정
+				
+				, success : function(data) {
+					if(data.code == 200) {
+						alert("메모가 저장되었습니다.");
+						
+						location.href = "/timeline/timeline-view";
+					} else {
+						alert(data.errorMessage);
+						
+					}
+				}
+				, error : function(request, status, error) {
+					alert("글을 저장하는 데 실패");
+					
+				}
 			})
 		})
 		
@@ -151,6 +182,7 @@
 				,data:{"userId":userId, "postId":postId, "commentContent":commentContent}
 				,success: function(data) {
 					if(data.code == 200) {
+						
 						alert("댓글이 달렸습니다.");
 						location.href="/timeline/timeline-view";
 					} else {

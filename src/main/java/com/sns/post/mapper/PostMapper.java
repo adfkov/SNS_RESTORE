@@ -8,7 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 public interface PostMapper {
 	public void insertPost
 	(@Param("userId") int userId
+	,@Param("subject") String subject
 	, @Param("content")String content
-	, @Param("file")MultipartFile file);
+	, @Param("imagePath")String imagePath);
 	
 }

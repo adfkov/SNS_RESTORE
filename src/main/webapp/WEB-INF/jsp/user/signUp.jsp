@@ -51,6 +51,14 @@
 					$('#idCheckDuplicated').addClass('d-none');
 					$('#idCheckOk').addClass('d-none');
 					let loginId = $('#loginId').val().trim();
+					
+					if(loginId == "") {
+						alert("아이디를 입력하세요.");
+						return;
+					} else if(loginId.length < 4) {
+							alert("아이디는 4자 이상이요!");
+							return;
+					}
 				
 				$.ajax({
 					url:"/user/is_duplicated_id"

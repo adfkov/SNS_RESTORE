@@ -31,6 +31,7 @@ public class PostEntity {
 	@Column(name="userId")
 	private int userId;
 	private String content;
+	@Column(name="imagePath")
 	private String imagePath;
 	@Column(name="createdAt", updatable = false)
 	@UpdateTimestamp

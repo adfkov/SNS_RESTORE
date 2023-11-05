@@ -5,6 +5,22 @@
  <mapper namespace="com.sns.post.mapper.PostMapper">
  	<insert id="insertPost" parameterType="map">
  		INSERT INTO `post`
- 		()
+ 		(	`userId`
+			,`subject`
+			,`content`
+			,`imagePath`
+			,`createdAt`
+			,`updatedAt`)
+		VALUES
+		(
+				#{userId}
+ 			,#{subject}
+ 			,#{content}
+ 			, #{imagePath}
+ 			, NOW()
+ 			, NOW()
+		
+		
+		)
  	</insert>
  </mapper>
