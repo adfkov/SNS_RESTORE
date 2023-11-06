@@ -19,10 +19,10 @@ public class TimelineController {
 	// http://localhost:7070/timeline/timeline-view
 	@GetMapping("/timeline-view")
 	public String timeLine(Model model) {
-//		List<PostEntity> postList = postBO.getPostList();
+	List<PostEntity> postList = postBO.getPostList();
 		
-		List<CardView> cardViewList = ;
-		model.addAttribute("cardViewList", cardViewList);
+//		List<CardView> cardViewList = ;
+		//model.addAttribute("cardViewList", cardViewList);
 		model.addAttribute("viewName", "/timeline/timeline");
 //		model.addAttribute("postList", postList);
 		
