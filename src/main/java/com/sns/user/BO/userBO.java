@@ -1,6 +1,8 @@
 package com.sns.user.BO;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,13 @@ public class userBO {
 	@Autowired
 	private UserMapper userMapper;
 	
+//	public List<UserEntity> selectUser() {
+//		return userMapper.selectUser();
+//	}
+	public UserEntity findById(int id) {
+		return userMapper.findById(id); //orElse(null)
+	}
+	
 	public UserEntity findByLoginId(String loginId) {
 		return userMapper.findByLoginId(loginId);
 	}
@@ -20,6 +29,8 @@ public class userBO {
 	public UserEntity findByLoginIdAndPassword(String loginId, String password) {
 		return userMapper.findByLoginIdAndPassword(loginId,password);
 	}
+	
+
 	
 	// input: 4개 파라미터		output:id(pk)
 	public Integer addUser(String loginId, String password , String name, String email) { // 해싱된 것

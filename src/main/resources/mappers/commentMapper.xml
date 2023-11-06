@@ -23,4 +23,17 @@
 		
  	</insert>
  	
+ 	<select id="selectCommentListByPostId" parameterType="int" resultType="com.sns.comment.domain.Comment">
+ 		SELECT
+ 			`id`
+ 			,`postId`
+ 			,`userId`
+ 			,`content`
+ 			,`createdAt`
+			,`updatedAt`
+ 		FROM
+ 			`sns_230619_comment`
+ 		WHERE
+ 			`postId` = #{postId}
+ 	</select>
  </mapper>

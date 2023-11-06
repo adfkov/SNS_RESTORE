@@ -13,6 +13,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -24,6 +25,7 @@ import lombok.ToString;
 @Builder
 @Getter
 @Table(name="post")
+@Data
 public class PostEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

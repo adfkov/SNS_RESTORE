@@ -8,21 +8,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.sns.post.BO.PostBO;
-import com.sns.post.Entity.PostEntity;
+import com.sns.timeline.BO.TimelineBO;
+import com.sns.timeline.domain.CardView;
 
 @RequestMapping("/timeline")
 @Controller
 public class TimelineController {
-	@Autowired
-	private PostBO postBO;
+	
+		@Autowired
+		private TimelineBO timelineBO;
+		//	private PostBO postBO;
 	// http://localhost:7070/timeline/timeline-view
 	@GetMapping("/timeline-view")
 	public String timeLine(Model model) {
-	List<PostEntity> postList = postBO.getPostList();
+//		List<PostEntity> postList = postBO.getPostList();
 		
-//		List<CardView> cardViewList = ;
-		//model.addAttribute("cardViewList", cardViewList);
+		List<CardView> cardViewList = timelineBO.generateCardViewList();  // view -> controller> TimelineBO <-> PostBO(상호참조 에러) -> BO -> Repository // 화면에 가까운 BO 
+		
+		model.addAttribute("cardViewList", cardViewList);
 		model.addAttribute("viewName", "/timeline/timeline");
 //		model.addAttribute("postList", postList);
 		
