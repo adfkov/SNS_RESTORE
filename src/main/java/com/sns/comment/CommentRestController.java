@@ -18,7 +18,7 @@ import com.sns.comment.BO.CommentBO;
 public class CommentRestController {
 	@Autowired
 	private CommentBO commentBO;
-
+	
 	@PostMapping("/add-comment")
 	public Map<String, Object> addComment(
 			HttpSession session
@@ -31,7 +31,9 @@ public class CommentRestController {
 		commentBO.addComment(userId, postId, commentContent);
 		
 		// 응답값
-		result.put("code", 200);
+		if(userId == null) {
+			result.put("code", 200);
+			}
 		
 		return result;
 		

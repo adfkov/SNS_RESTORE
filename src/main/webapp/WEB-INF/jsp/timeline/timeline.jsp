@@ -84,7 +84,7 @@
 					<%-- 댓글 쓰기 --%>
 					<div class="comment-write d-flex border-top mt-2">
 						<input type="text" class="form-control border-0 mr-1 comment-input" placeholder="댓글 달기"/> 
-						<button type="button" class="comment-btn btn btn-light" data-post-id="${card.post.id}">게시</button>
+						<button type="button" class="comment-btn btn btn-light" data-post-id="${post.id}">게시</button>
 					</div>
 				</div> <%--// 댓글 목록 끝 --%>
 			</div> <%--// 카드1 끝 --%>
@@ -171,22 +171,34 @@
 		
 		// 댓글 게시 버튼 눌렀을 때 
 		$(".comment-btn").on('click', function() {
-			let userId = $('#userIdSpan').text();
-			let postId  = $('.postId').text();
+/* 			let userId = $('#userIdSpan').text(); */
+			let postId  = $(this).data('post-id'); //
+			alert(postId);
 			let commentContent = $('.comment-input').val();
 			
+			// 댓글 내용 가져오기 
+			// 1) 형제
+			//let content = $(this).siblings("input").val().trim();			
+			//alert(content);
+			
+			//2) prev() 함수
+			let content = $(this).prev().val().trim();
+			
+			
+		
 			$.ajax({
 				// request
 				type:"POST"
 				,url:"/comment/add-comment"
-				,data:{"userId":userId, "postId":postId, "commentContent":commentContent}
+				,data:{"postId":postId, "commentContent":commentContent}
 				,success: function(data) {
 					if(data.code == 200) {
 						
 						alert("댓글이 달렸습니다.");
 						location.href="/timeline/timeline-view";
-					} else {
+					} else if(data.code == 500){
 						alert(data.errorMessage);
+						location.href = "/user/sing-in-view";
 					}
 				}	
 			//
