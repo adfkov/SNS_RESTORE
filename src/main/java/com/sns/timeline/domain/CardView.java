@@ -21,8 +21,10 @@ public class CardView {
 	// 댓글들
 	private List<CommentView> commentList;
 	// 좋아요 개수
+	private int likeCount;
 	
-	// 내가 좋아요를 눌렀는지 여부
+	// 내가 좋아요를 눌렀는지 여부 - timeline-view에서 이미 결정난다.
+	private boolean filledLike; // false: 빈하트, true: 채워진 하트
 	
 	
 }

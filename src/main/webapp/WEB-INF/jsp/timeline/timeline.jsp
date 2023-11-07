@@ -52,7 +52,7 @@
 				
 				<%-- 좋아요 --%>
 				<div class="card-like m-3">
-					<a href="#" class="like-btn">
+					<a href="#" class="like-btn" data-post-id="${card.post.id}">
 						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="filled heart">
 					</a>
 					좋아요 11개
@@ -64,6 +64,7 @@
 					<span class="postContent">${card.post.content}</span>
 				</div>
 				
+				
 				<%-- 댓글 제목 --%>
 				<div class="card-comment-desc border-bottom">
 					<div class="ml-3 mb-1 font-weight-bold">댓글</div>
@@ -71,6 +72,7 @@
 				
 				<%-- 댓글 목록 --%>
 				<div class="card-comment-list m-2">
+				<c:forEach items="${card.commentList}" var="commentView">
 				<%-- c:forEach items = ${commentList} 
 					<c:if>
 					
@@ -78,15 +80,18 @@
 				--%>
 					<%-- 댓글 내용들 --%>
 					<div class="card-comment m-1">
-						<span class="font-weight-bold">댓글쓴이</span>
-						<span>댓글 내용</span>
+						<span class="font-weight-bold">${commentView.user.loginId}</span>
+						<span>${commentView.comment.content}</span>
 						
 						<%-- 댓글 삭제 버튼 --%>
-						<a href="#" class="comment-del-btn">
+						<%-- 로그인 된 사람과 댓글 쓴 이 일치 시 삭제 버튼 노출 --%>
+						<c:if test="${userId eq commentView.user.id}">
+						<a href="#" class="comment-del-btn" data-comment-id="${commentView.comment.id}">
 							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
 						</a>
+						</c:if>
 					</div>
-					
+				</c:forEach>
 					<%-- 댓글 쓰기 --%>
 					<div class="comment-write d-flex border-top mt-2">
 						<input type="text" class="form-control border-0 mr-1 comment-input" placeholder="댓글 달기"/> 
@@ -196,7 +201,7 @@
 				// request
 				type:"POST"
 				,url:"/comment/add-comment"
-				,data:{"postId":postId, "commentContent":commentContent}
+				,data:{"postId":postId, "commentContent":content}
 				,success: function(data) {
 					if(data.code == 200) {
 						
@@ -204,11 +209,67 @@
 						location.href="/timeline/timeline-view";
 					} else if(data.code == 500){
 						alert(data.errorMessage);
-						location.href = "/user/sing-in-view";
+						location.href = "/user/sign-in-view";
 					}
 				}	
-			//
+			// TODO: error 적기
+		
 			})
-		})
+		});
+		
+		// 댓글 삭제
+		$('.comment-del-btn').on('click', function(e) {
+				alert("댓글 삭제 클릭");
+				e.preventDefault();
+				let commentId = $(this).data("comment-id");
+				//alert(commentId);
+				
+				$.ajax({
+					type:"DELETE"
+					, url:"/comment/delete"
+					, data: {"commentId":commentId}
+					, success: function(data) {
+						if(data.code == 200) {
+							location.reload(true);
+						} else {
+							alert(data.errorMessage);
+						}
+					}
+					, error : function(request, status, error) {
+						alert("댓글 삭제 하는데 실패했습니다.");
+					}
+					
+					
+				
+				});
+				
+		});
+		
+		// 좋아요 버튼 눌렀을 때
+		$('.like-btn').on('click', function(e) {
+		//	alert("좋아요?");
+			e.preventDefault();
+			let postId = $(this).data('post-id');
+			alert(postId);
+			$.ajax({
+				type:"POST"
+				,url:"/like/"+ postId
+				//,data:{"postId": postId}
+				
+				, success: function(data) {
+					if(data.code == 200) {
+						alert("좋아요!");
+						location.reload();
+					} else if(data.code == 500){
+						location.href="/user/sign-in-view";
+						alert(data.errorMessage);
+					}
+				}
+				, error : function(request, status, error) {
+					alert("좋아요 실패");
+				}
+			});
+		});
+		
 	});
 </script>

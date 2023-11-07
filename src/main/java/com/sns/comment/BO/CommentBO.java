@@ -50,4 +50,11 @@ public class CommentBO {
 		
 
 	}
+	
+	// 댓글 삭제 
+	// input: 삭제할 댓글 번호		output:X
+	public void deleteCommentById(int id) {
+		commentMapper.deleteCommentById(id);
+	}
+	
 }
