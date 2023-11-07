@@ -2,6 +2,8 @@ package com.sns.timeline;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +22,7 @@ public class TimelineController {
 		//	private PostBO postBO;
 	// http://localhost:7070/timeline/timeline-view
 	@GetMapping("/timeline-view")
-	public String timeLine(Model model) {
+	public String timeLine(Model model , HttpSession session) {
 //		List<PostEntity> postList = postBO.getPostList();
 		
 		List<CardView> cardViewList = timelineBO.generateCardViewList();  // view -> controller> TimelineBO <-> PostBO(상호참조 에러) -> BO -> Repository // 화면에 가까운 BO 
