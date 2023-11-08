@@ -24,8 +24,9 @@ public class TimelineController {
 	@GetMapping("/timeline-view")
 	public String timeLine(Model model , HttpSession session) {
 //		List<PostEntity> postList = postBO.getPostList();
+		Integer userId = (Integer) session.getAttribute("userId");
 		
-		List<CardView> cardViewList = timelineBO.generateCardViewList();  // view -> controller> TimelineBO <-> PostBO(상호참조 에러) -> BO -> Repository // 화면에 가까운 BO 
+		List<CardView> cardViewList = timelineBO.generateCardViewList(userId);  // view -> controller> TimelineBO <-> PostBO(상호참조 에러) -> BO -> Repository // 화면에 가까운 BO 
 		
 		model.addAttribute("cardViewList", cardViewList);
 		model.addAttribute("viewName", "/timeline/timeline");

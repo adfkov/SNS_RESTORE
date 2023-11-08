@@ -30,8 +30,13 @@ public class PostBO {
 		if(file != null) {
 			imagePath = fileManager.saveFile(userLoginId, file);
 			
-		}
+			}
+		
 		
 		postMapper.insertPost(userId ,subject ,content, imagePath);
 	}
+
+		
 }
+
+

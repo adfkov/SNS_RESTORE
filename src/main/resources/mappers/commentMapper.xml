@@ -43,5 +43,8 @@
  			`sns_230619_comment`
  		WHERE
  			`id` = #{id}
+ 
  	</delete>
+
+ 
  </mapper>

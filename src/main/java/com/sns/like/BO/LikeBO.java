@@ -12,7 +12,7 @@ public class LikeBO {
 	
 	public void tellLikeToggle(int postId, int userId) {
 		  
-		if(likeMapper.likeToggle(postId, userId) == 0) {
+		if(likeMapper.selectLikeCountByPostIdOrUserId(postId, userId) == 0) {
 			likeMapper.insertLikeToggle(postId, userId);
 		} else {
 			likeMapper.deleteLikeToggle(postId, userId);
@@ -20,6 +20,20 @@ public class LikeBO {
 		 
 	}
 	
+	// INPUT: 글번호 / OUTPUT: 개수(COUNT)
+	public int getLikeCountByPostId(int postId) {
+		return likeMapper.selectLikeCountByPostIdOrUserId(postId, null);
+	}
+	
+	// input: 글번호 ,userId(Integer)		output: 채워진지 여부(boolean)
+	public boolean filledLike(int postId, Integer userId) {
+		// 비로그인
+		if(userId == null) {			
+			return false;
+		} 
+		return likeMapper.selectLikeCountByPostIdOrUserId(postId, postId) > 0;
+		
+	}
 	
 
 }
