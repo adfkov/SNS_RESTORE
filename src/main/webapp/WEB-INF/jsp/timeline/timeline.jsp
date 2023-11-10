@@ -43,6 +43,19 @@
 					</a>
 				</div>	
 				
+				
+				<div class="p-2 d-flex justify-content-between">
+					<span class="font-weight-bold">${card.user.loginId}</span>
+
+					<a href="#" class="more-btn">
+					<%-- 더보기(내가 쓴 글일 때만 노출- 삭제 또는 수정) --%>
+					<c:if test="${userId eq card.user.id}">
+					<a href="#" class="more-btn" data-toggle="modal" data-target="#modal" data-post-id="${card.post.id}">
+						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
+					</a>
+					</c:if>
+				</div>	
+				
 				<%-- 카드 이미지 --%>
 				<c:if test="${not empty card.post.imagePath}">
 				<div class="card-img">
@@ -110,6 +123,7 @@
 			</div> <%--// 카드1 끝 --%>
 			</c:forEach>
 		</div> <%--// 타임라인 영역 끝  --%>
+		
 	</div> <%--// contents-box 끝  --%>
 </div>
 
@@ -137,12 +151,56 @@
 				$('#fileName').text("");
 				return;
 				// 태그 사이는 text 함수
-				
 			}
+				let postId = $(this).data("post-id");
+		//alert(postId);
+		
+		$.ajax({
+			// request
+			url: "/like/" + postId
+			
+			// response
+			, success:function(data) {
+				if (data.code == 200) {
+					location.reload(true); // 새로고침 => timeline 다시 가져옴 -> 하트 채워지거나 or 비워지거나
+				} else if (data.code == 500) {
+					// 비로그인 상태
+					alert(data.errorMessage);
+					location.href = "/user/sign-in-view"; // 로그인 페이지로 이동
+				}
+			}
+			, error:function(request, status, error) {
+				alert("좋아요 하는데 실패했습니다.");
+				}
+			
 			// 유효성 통과한 이미지는 업로드 된 파일명 노출
 			$('#fileName').text(fileName);
 		
+			});
 		});
+		
+		// 글 삭제(... 더보기 버튼 클릭) => 모달 띄우기 => 모달에 글번호 세팅
+		$(".more-btn").on("click", function(e) {
+			e.preventDefault(); // a 태그 올라가는 현상 방지
+			
+			let postId = $(this).data("post-id"); // ... 버튼에 넣어둔 글 번호 getting
+			//alert(postId);
+			
+			// 1개인 모달 태그에 재활용. data-post-id를 심어줌
+			$("#modal").data("post-id", postId); // 모달 태그에 setting
+		});
+		
+		// 모달 안에 있는 삭제하기 클릭 => 진짜 삭제
+		$("#modal #deletePostLink").on("click", function(e) {
+			e.preventDefault();
+			
+			let postId = $("#modal").data("post-id"); // getting
+			//alert(postId);
+			
+			// ajax 글 삭제 요청
+			
+		});
+	
 		
 		// 내용 입력 후 글쓰기 버튼 눌렀을 때
 		$("#writeBtn").on('click', function() {

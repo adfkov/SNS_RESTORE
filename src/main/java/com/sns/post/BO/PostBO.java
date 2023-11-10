@@ -35,6 +35,18 @@ public class PostBO {
 		
 		postMapper.insertPost(userId ,subject ,content, imagePath);
 	}
+	
+
+	// 글 삭제
+	public void deletePostById(int postId) {
+		// 기존 글 => 이미지 삭제
+
+		// db 글 삭제
+
+		// db 댓글 삭제
+
+		// db 좋아요
+	}
 
 		
 }
